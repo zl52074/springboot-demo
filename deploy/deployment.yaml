@@ -2,29 +2,29 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: $PROJECT_NAME
+  name: springboot-demo
 ---
 #Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: $PROJECT_NAME
-  name: $PROJECT_NAME
+  namespace: springboot-demo
+  name: springboot-demo
   labels:
-    app: $PROJECT_NAME
+    app: springboot-demo
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: $PROJECT_NAME
+      app: springboot-demo
   template:
     metadata:
       labels:
-        app: $PROJECT_NAME
+        app: springboot-demo
     spec:
       containers:
-        - name: $PROJECT_NAME
-          image: $DOCKER_USERNAME/$PROJECT_NAME:$PROJECT_VERSION
+        - name: springboot-demo
+          image: {IMAGE}
           ports:
             - containerPort: 8080
 ---
@@ -32,13 +32,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: $PROJECT_NAME
-  name: $PROJECT_NAME-service
+  namespace: springboot-demo
+  name: springboot-demo-service
   labels:
-    app: $PROJECT_NAME
+    app: springboot-demo
 spec:
   selector:
-    app: $PROJECT_NAME
+    app: springboot-demo
   ports:
     - protocol: TCP
       port: 8080 #对集群内开放的端口
@@ -48,10 +48,10 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  namespace: $PROJECT_NAME
-  name: $PROJECT_NAME-ingress
+  namespace: springboot-demo
+  name: springboot-demo-ingress
   labels:
-    app: $PROJECT_NAME
+    app: springboot-demo
 spec:
   rules:
     - host: springboot-demo.zl52074.com
@@ -61,6 +61,6 @@ spec:
             path: /
             backend:
               service:
-                name: $PROJECT_NAME-service
+                name: springboot-demo-service
                 port:
                   number: 80
