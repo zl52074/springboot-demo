@@ -63,4 +63,4 @@ spec:
               service:
                 name: springboot-demo-service
                 port:
-                  number: 80
+                  number: 8080
