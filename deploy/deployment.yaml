@@ -1,0 +1,66 @@
+#Namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: $PROJECT_NAME
+---
+#Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: $PROJECT_NAME
+  name: $PROJECT_NAME
+  labels:
+    app: $PROJECT_NAME
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: $PROJECT_NAME
+  template:
+    metadata:
+      labels:
+        app: $PROJECT_NAME
+    spec:
+      containers:
+        - name: $PROJECT_NAME
+          image: $DOCKER_USERNAME/$PROJECT_NAME:$PROJECT_VERSION
+          ports:
+            - containerPort: 8080
+---
+#Service
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: $PROJECT_NAME
+  name: $PROJECT_NAME-service
+  labels:
+    app: $PROJECT_NAME
+spec:
+  selector:
+    app: $PROJECT_NAME
+  ports:
+    - protocol: TCP
+      port: 8080 #对集群内开放的端口
+      targetPort: 8080 #容器暴露的端口
+---
+#Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: $PROJECT_NAME
+  name: $PROJECT_NAME-ingress
+  labels:
+    app: $PROJECT_NAME
+spec:
+  rules:
+    - host: springboot-demo.zl52074.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: $PROJECT_NAME-service
+                port:
+                  number: 80
