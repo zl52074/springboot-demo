@@ -5,7 +5,7 @@ pipeline {
   environment {
       DOCKER_USERNAME = 'zl52074'
       PROJECT_NAME = 'springboot-demo'
-      GITHUB_URL = 'https://github.com/zl52074/springboot-demo.git'
+      GITHUB_URL = 'git@github.com:zl52074/springboot-demo.git' //ssh地址配置公钥免密登录
       GITHUB_USERNAME = 'zl52074'
       GITHUB_EMAIL = '737218582@qq.com'
       GITHUB_CREDENTIAL_ID = 'git'
@@ -71,7 +71,7 @@ pipeline {
           sh 'git config --global user.email "$GITHUB_EMAIL" '
           sh 'git config --global user.name "$GITHUB_USERNAME" '
           sh 'git tag -a $PROJECT_VERSION -m "$PROJECT_VERSION" '
-          sh 'git push http://$GIT_USERNAME:$GIT_PASSWORD@github.com/$GITHUB_USERNAME/$PROJECT_NAME.git --tags --ipv4'
+          sh 'git push $GITHUB_URL --tags --ipv4'
         }
       }
     }
