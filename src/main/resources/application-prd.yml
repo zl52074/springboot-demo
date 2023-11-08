@@ -4,7 +4,7 @@ spring:
   datasource:
     username: root
     password: root
-    url: jdbc:mysql://mysql-service:3306/test
+    url: jdbc:mysql://mysql-service.mysql:3306/test
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 mybatis-plus:
